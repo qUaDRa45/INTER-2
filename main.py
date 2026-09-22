@@ -3,14 +3,12 @@ import argparse
 import re
 
 def parse_point(s):
-    # Регулярка для Point(x, y), поддерживает целые и дробные числа с минусом
     m = re.fullmatch(r'Point\(\s*(-?\d+\.?\d*)\s*,\s*(-?\d+\.?\d*)\s*\)', s.strip())
     if m:
         return ("Point", float(m.group(1)), float(m.group(2)))
     return None
 
 def parse_line(s):
-    # Ищем Line(Point(...), Point(...))
     m = re.fullmatch(r'Line\(\s*(Point\(.*?\))\s*,\s*(Point\(.*?\))\s*\)', s.strip())
     if not m:
         return None
@@ -21,7 +19,6 @@ def parse_line(s):
     return ('Line', p1, p2)
 
 def parse_circle(s):
-    # Ищем Circle(Point(...), радиус)
     m = re.fullmatch(r'Circle\(\s*(Point\(.*?\))\s*,\s*(-?\d+\.?\d*)\s*\)', s.strip())
     if not m:
         return None
@@ -60,7 +57,6 @@ def read_file(path):
         with open(path, 'r', encoding='utf-8') as f:
             for line in f:
                 obj = parse_object(line)
-                # Некорректные строки просто игнорируются
                 if obj is not None:
                     objects.append(obj)
     except FileNotFoundError:
